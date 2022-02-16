@@ -45,6 +45,5 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
 
 ### 2. Implementations
 
-Please refer to [UserGuide.pdf](UserGuide.pdf)
-
+Please refer to [TheoryGuide.pdf](TheoryGuide.pdf)
 
