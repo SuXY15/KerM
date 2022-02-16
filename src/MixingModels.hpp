@@ -129,7 +129,7 @@ public:
     EMST(const vector<real> &particles, const vector<real> &weights):
         MixingModel(particles, weights)
     {
-        this->name = "EMST";
+        this->name = "EMST-1D";
         Bv.resize(N);
         dphi.resize(N);
         index.resize(N);

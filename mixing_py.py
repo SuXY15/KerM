@@ -14,6 +14,7 @@ max_steps = 10000
 # ==================================
 # DNS datasets
 # # 1D inert: F2c in DNS_PoF_1988, sigma_x = 0.3
+# casename = "PoF_1988_F2c"
 # N = 1000    # number of particles
 # var_arr = [0.92, 0.80, 0.54, 0.35, 0.28]
 # ddt_arr = [0.22, 0.42, 0.83, 1.28, 1.49]
@@ -21,6 +22,7 @@ max_steps = 10000
 # ylim_0 = [0,3]
 
 # # 1D inert F2e in DNS_PoF_1988
+# casename = "PoF_1988_F2c"
 # N = 50000  # number of particles
 # var_arr = [0.94, 0.76, 0.54, 0.38, 0.27]
 # ddt_arr = [0,    0.2,  0.61, 1.06, 1.27]
@@ -28,7 +30,8 @@ max_steps = 10000
 # ylim_0 = [0,3]
 
 # 1D inert DNS PoF Juneja 1996 Phi2, sigma_x = 0.3
-N = 1000  # number of particles
+casename = "PoF_1996_Fig9b"
+N = 500  # number of particles
 var_arr = [1.0, 0.8, 0.6, 0.5, 0.4, 0.3]
 ddt_arr = [0,   0.2, 0.4, 0.5, 0.6, 0.7]
 namerule = "./data/inert/Juneja_1996_PoF_Phi2_Var_%.1f.txt"
@@ -51,12 +54,12 @@ xr = np.min(init_PDF[:,0]), np.max(init_PDF[:,0])
 f_init_PDF = interp1d(init_PDF[:,0], init_PDF[:,1]/np.max(init_PDF[:,1]))
 particles = np.sort(acceptSampling(f_init_PDF, xr, size=(N,)))
 
-# uniform weights
-weights = np.ones(N)/N
+# # uniform weights
+# weights = np.ones(N)/N
 
-# # weighted PDF, should not use large N
-# weights = f_init_PDF(particles)*cdiff(particles)
-# weights = weights / np.sum(weights)
+# weighted PDF, should not use large N
+weights = f_init_PDF(particles)*cdiff(particles)
+weights = weights / np.sum(weights)
 
 # ==================================
 # Select Mixing Models
@@ -65,6 +68,7 @@ models = [
     IEM(particles, weights),
     MCurl(particles, weights),
     EMST(particles, weights),
+    # EMST(np.sort(acceptSampling(f_init_PDF, xr, size=(1000,))),  np.ones(1000)/1000),
     KerM(particles, weights, sigma_x=0.3),
 ]
 
@@ -140,9 +144,10 @@ axs[0, -1].legend(ncol=2, loc="upper center", frameon=False,
 axs[0, 0].set_ylabel("PDF evolution")
 axs[1, 0].set_ylabel("Scalar Variance")
 for j in range(len(models)):
-    axs[0, j].set_ylim(ylim_0)#y0lim)
+    axs[0, j].set_ylim(ylim_0)
     axs[1, j].set_ylim(y1lim)
 
-fig.subplots_adjust(left=0.2,bottom=0.10,top=0.9,right=0.98, wspace=0.0, hspace=0.35)
+fig.subplots_adjust(left=0.06,bottom=0.10,top=0.9,right=0.98, wspace=0.0, hspace=0.35)
+plt.savefig("figs/py_%s_comparison.png"%casename)
 
 plt.show()

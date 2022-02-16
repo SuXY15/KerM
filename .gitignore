@@ -4,4 +4,5 @@ local/
 docs/
 ref/
 PaSR/
-mix  # the executable file, should be different for different platforms
+mix
+UserGuide.md

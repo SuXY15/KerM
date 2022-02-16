@@ -66,7 +66,6 @@ int main()
             mm->update(Omega_phi, dt);
 
             std_j = sqrt(variance(mm->phis, mm->weights));
-            // cout << std_j/std_0*var_arr[0] << endl;
             if (std_j/std_0*var_arr[0] <= var_arr[j]){
                 filename = PATH + casename + "_" + mm->name + "_"
                            + to_string(var_arr[j]) + ".txt";
