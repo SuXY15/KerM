@@ -10,7 +10,7 @@ int main()
     /*************************
      mixing settings
      *************************/
-    int N = 4000;              // number of samples
+    int N = 4000;               // number of samples
     int MAX_STEPS = 1000;       // maximum steps
     real Omega_phi = 2;         // mixing frequency
     real dt = 4e-3;             // timestep

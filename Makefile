@@ -4,9 +4,9 @@ CC = g++
 CFLAGS = -O3 -std=c++11 -DDOUBLE
 
 SRC = \
-	./src/main.cpp
+	./src_c/main.cpp
 
-INC = ./src/
+INC = ./src_c/
 
 default:
 	make clean

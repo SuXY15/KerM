@@ -7,12 +7,12 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
 ### 1. Usage
 
 + Python Version:
-  + [models.py](models.py): implementation of mixing models
-  + [mixing_py.py](mixing_py.py): run simulation
+  + [src_python/models.py](src_python/models.py): implementation of mixing models
+  + [src_python/mixing_py.py](src_python/mixing_py.py): run simulation
 
   ```shell
   # run simulation, taking around 10 minute for N=1000
-  python mixing_py.py
+  python src_python/mixing_py.py
   ```
 
   Comparison results of 1k particles for EMST and 10k particles for other models (uniform weighted samples, KerM sigma_k=0.3)
@@ -20,8 +20,8 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   ![](figs/py_PoF_1996_Fig9b_comparison_uniform_1000&10000.png)
 
 + C++ Version:
-  + [src/MixingModels.hpp](src/MixingModels.hpp): implementation of mixing models
-  + [src/main.cpp](src/main.cpp): run simulation
+  + [src_c/MixingModels.hpp](src_c/MixingModels.hpp): implementation of mixing models
+  + [src_c/main.cpp](src_c/main.cpp): run simulation
   + [performance_c.py](performance_c.py): show results
 
   ```shell
@@ -41,7 +41,12 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   
   <img src="figs/c++_PoF_1996_Fig9b_performance.png" alt="c++_PoF_1996_Fig9b_performance" style="width:50%;" />
   
-  
+
++ Fortran version:
+
+  + [src_fortran/kernel_mixing_model.f90](src_fortran/kernel_mixing_model.f90): source code with differential diffusion supported version, not fully tested yet.
+
+    
 
 ### 2. Implementations
 
