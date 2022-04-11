@@ -24,7 +24,6 @@
     integer,          intent(in)    :: np, npd, ncomp
     real(kind(1.e0)), intent(in)    :: omdt, z(np)
     real(kind(1.e0)), intent(inout) :: f(npd,ncomp), wt(np)
-
     real(kind(1.e0)) :: sigma_k, var_k, coeffs, epsilon
     real(kind(1.e0)) :: mean_z, var_z, dvar_z, CDF(np)
     real(kind(1.e0)) :: xpq, dpq, fpq
@@ -36,7 +35,7 @@
     if( np <= 1 ) return;
 
     ! settings
-    epsilon = 1e-12;
+    epsilon = 1e-24;
     sigma_k = 0.25; ! the only model parameter, KerM(0.1)->EMST, KerM(1)->MC
     sigma_k = max(sigma_k, 1.0/np);
     var_k = sigma_k**2;
@@ -96,7 +95,6 @@
                 if( wt(p)+wt(q) > ur(2) * (wt(p)+wtmax) ) exit ! accept q
             end do
             if( p == q .or. wt(p) <= 0. .or. wt(q) <= 0. ) cycle
-
             xpq = abs(CDF(p) - CDF(q))
             dpq = abs(z(p) - z(q))
             fpq = exp(-xpq**2/4/var_k)
@@ -111,8 +109,6 @@
     call random_number( ur(1) )
     nmix = int( 1.5*omdt*np*coeffs + ur(1) )
     
-    ! write(*,*) "nmix = ", nmix
-
     ! loop over particle-pair interactions
     do imix = 1, nmix
         ! select p:  marginal prob ~ wtave + w(p)
@@ -136,8 +132,8 @@
         call random_number(ur)
         if ( ur(1) <= fpq ) then
             a = ur(2)
-            call random_number(a)
             fbar(1:ncomp) = (f(p,1:ncomp)*wt(p) + f(q,1:ncomp)*wt(q)) / (wt(p) + wt(q))
+            
             f(p,1:ncomp) = f(p,1:ncomp) - a * (f(p,1:ncomp) - fbar(1:ncomp))
             f(q,1:ncomp) = f(q,1:ncomp) - a * (f(q,1:ncomp) - fbar(1:ncomp))
         endif
@@ -190,10 +186,10 @@
     if( np <= 1 ) return;
 
     ! settings
-    sigma_k = 0.2; ! the only model parameter, KerM(0.1)->EMST, KerM(1)->MC
-    var_k = sigma_k**2;
-    epsilon = 1e-12;
+    epsilon = 1e-24;
+    sigma_k = 0.25; ! the only model parameter, KerM(0.1)->EMST, KerM(1)->MC
     sigma_k = max(sigma_k, 1.0/np);
+    var_k = sigma_k**2;
 
     ! weights statistics
     wtsum = sum( wt(1:np) )
@@ -246,7 +242,6 @@
             if( wt(p)+wt(q) > ur(2) * (wt(p)+wtmax) ) exit ! accept q
         end do
         if( p == q .or. wt(p) <= 0. .or. wt(q) <= 0. ) cycle
-
         xpq = abs(CDF(p) - CDF(q))
         dpq = abs(z(p) - z(q))
         fpq = exp(-xpq**2/4/var_k)
@@ -320,8 +315,8 @@
     integer          :: countB(Nbin), accumB(Nbin)
     integer          :: i, j
 
-    minA = minval(A) - 1e-8
-    maxA = maxval(A) + 1e-8
+    minA = minval(A) - 1e-10
+    maxA = maxval(A) + 1e-10
 
     do j=1,Nbin
       minB(j) = minA + (maxA-minA) / Nbin * (j-1)

@@ -1,8 +1,8 @@
 PROGRAM := mixing_test
 FC      := gfortran
-FCFLAGS := -g # -O
-# FCFLAGS += -ffree-line-length-none
-# FCFLAGS += -g -fbacktrace -fno-align-commons -fbounds-check
+FCFLAGS := -ffree-line-length-none -fbounds-check -fno-align-commons
+FCFLAGS += -O # for optimization
+# FCFLAGS += -g -fbacktrace # for debug, no optimization
 FLFLAGS := 
 
 SRCS_f   := $(wildcard *.f)

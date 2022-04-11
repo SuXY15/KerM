@@ -10,7 +10,7 @@ int main()
     /*************************
      mixing settings
      *************************/
-    int N = 1000;               // number of samples
+    int N = 4000;               // number of samples
     int MAX_STEPS = 1000;       // maximum steps
     real Omega_phi = 2;         // mixing frequency
     real dt = 4e-3;             // timestep
@@ -66,7 +66,7 @@ int main()
 
             std_j = sqrt(variance(mm->phis, mm->weights));
             if (std_j/std_0*var_arr[0] <= var_arr[j]){
-                filename = PATH + casename + "_" + mm->name + "_"
+                filename = PATH + casename + "_cpp_" + mm->name + "_"
                            + to_string(var_arr[j]) + ".txt";
                 printf("i = %4d, j = %d\r\n", i, j);
                 cout << std::flush;
@@ -77,7 +77,7 @@ int main()
         }
         printf("Time Cost = %f \r\n", mm->timecost);
         cout << std::endl << std::flush;
-        filename = PATH + casename + "_" + mm->name + "_costs.txt";
+        filename = PATH + casename + "_cpp_" + mm->name + "_costs.txt";
         saveCost(filename, N, mm->timecost);
     }
     return 0;

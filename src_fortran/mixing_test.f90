@@ -26,7 +26,7 @@ program mixing_test
 
     ! ==============================
     ! settings for number of particles and compositions
-    npd = 10000
+    npd = 50000
     ncomp = 1
     np = npd
     
@@ -90,7 +90,7 @@ program mixing_test
         endif
         
         call cpu_time(t0)
-        
+
         if (model_name == "IEM") then
             call iem(np, npd, ncomp, wt, f, omdt)
         elseif (model_name == "MC") then
@@ -140,9 +140,9 @@ contains
     ! vf is defined as the trace of the covariance of the scaled compositions.
 	subroutine compute_var(vf)
         real(kind(1.e0)), intent(out):: vf
-        integer:: j, kk
         real(kind(1.e0)):: sumwt
         real(kind(1.e0)), allocatable:: mean(:), var(:)
+        integer:: j, kk
 	
         allocate( mean(ncomp), var(ncomp) )
 
