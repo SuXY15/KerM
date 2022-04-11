@@ -31,7 +31,7 @@ max_steps = 10000
 
 # 1D inert DNS PoF Juneja 1996 Phi2, sigma_x = 0.3
 casename = "PoF_1996_Fig9b"
-N = 50000  # number of particles
+N = 4000  # number of particles
 var_arr = [1.0, 0.8, 0.6, 0.5, 0.4, 0.3]
 ddt_arr = [0,   0.2, 0.4, 0.5, 0.6, 0.7]
 namerule = "./data/inert/Juneja_1996_PoF_Phi2_Var_%.1f.txt"
@@ -155,6 +155,6 @@ for j in range(len(models)):
     axs[1, j].set_ylim(y1lim)
 
 fig.subplots_adjust(left=0.06,bottom=0.10,top=0.9,right=0.98, wspace=0.0, hspace=0.35)
-plt.savefig("figs/py_%s_comparison.png"%casename)
+plt.savefig("figs/comparison_python_%s.png"%casename)
 
 plt.show()
