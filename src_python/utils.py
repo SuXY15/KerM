@@ -79,3 +79,18 @@ def PDFstat(xi, yi):
     mu = np.sum(yi*xi)
     var = np.sum(yi*(xi-mu)**2)
     return mu, var
+
+def genSamples(PDFxy, N, method="uniform"):
+    xr = np.min(PDFxy[:,0]), np.max(PDFxy[:,0])
+    f_PDF = interp1d(PDFxy[:,0], PDFxy[:,1]/np.max(PDFxy[:,1]))
+    particles = np.sort(acceptSampling(f_PDF, xr, size=(N,)))
+
+    # uniform weights
+    if method == "uniform":
+        weights = np.ones(N)/N
+    else:
+        weights = f_PDF(particles)*cdiff(particles)
+        weights = weights / np.sum(weights)
+    idx = np.arange(N)
+    np.random.shuffle(idx)
+    return particles[idx], weights[idx]

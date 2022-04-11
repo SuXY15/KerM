@@ -22,25 +22,24 @@
     
     implicit none
     integer,          intent(in)    :: np, npd, ncomp
-    real(kind(1.d0)), intent(in)    :: omdt, z(np)
-    real(kind(1.d0)), intent(inout) :: f(npd,ncomp), wt(np)
+    real(kind(1.e0)), intent(in)    :: omdt, z(np)
+    real(kind(1.e0)), intent(inout) :: f(npd,ncomp), wt(np)
 
-    real(kind(1.d0)) :: sigma_k, var_k, coeffs, epsilon
-    real(kind(1.d0)) :: mean_z, var_z, dvar_z, CDF(np)
-    real(kind(1.d0)) :: xpq, dpq, fpq
-    real(kind(1.d0)) :: wtsum, wtave, wtmax
-    real(kind(1.d0)) :: ur(2), fbar(ncomp), a
-    integer          :: i, j
-    integer          :: p, q, nmix, imix
+    real(kind(1.e0)) :: sigma_k, var_k, coeffs, epsilon
+    real(kind(1.e0)) :: mean_z, var_z, dvar_z, CDF(np)
+    real(kind(1.e0)) :: xpq, dpq, fpq
+    real(kind(1.e0)) :: wtsum, wtave, wtmax
+    real(kind(1.e0)) :: ur(2), fbar(ncomp), a
+    integer          :: i, p, q, nmix, imix
 
     !  quick returns if no mixing required
     if( np <= 1 ) return;
 
     ! settings
-    sigma_k = 0.2; ! the only model parameter, KerM(0.1)->EMST, KerM(1)->MC
-    var_k = sigma_k**2;
     epsilon = 1e-12;
+    sigma_k = 0.25; ! the only model parameter, KerM(0.1)->EMST, KerM(1)->MC
     sigma_k = max(sigma_k, 1.0/np);
+    var_k = sigma_k**2;
 
     ! weights statistics
     wtsum = sum( wt )
@@ -67,33 +66,52 @@
         call bucketSort_CDF(z, CDF, np, 50)
     endif
 
-    ! calculate coeffs of kernel mixing
     dvar_z = 0;
-    do i = 1,np
-        ! select p:  marginal prob ~ wtave + w(p)
-        do
-            call random_number( ur )
-            p = min( np , 1 + int( ur(1) * np ) )
-            if( wt(p)+wtave > ur(2) * (wtmax+wtave) ) exit ! accept p
-        end do
-        ! select q:  conditional prob ~ w(p) + w(q)
-        do
-            call random_number( ur )
-            q = min( np , 1 + int( ur(1) * np ) )
-            if( wt(p)+wt(q) > ur(2) * (wt(p)+wtmax) ) exit ! accept q
-        end do
-        if( p == q .or. wt(p) <= 0. .or. wt(q) <= 0. ) cycle
+    ! calculate coeffs of kernel mixing
+    if (np <= 50) then
+        ! estimate with all possible pairs
+        do p = 1,np
+            do q = 1,np
+                if( p == q .or. wt(p) <= 0. .or. wt(q) <= 0. ) cycle
+                xpq = abs(CDF(p) - CDF(q))
+                dpq = abs(z(p) - z(q))
+                fpq = exp(-xpq**2/4/var_k)
+                dvar_z = dvar_z + wt(p)*wt(q)/(wt(p)+wt(q)) * fpq * dpq**2 / wtsum / np
+            enddo
+        enddo
+        coeffs = (var_z + epsilon) / (dvar_z + epsilon)
+    else
+        ! estimate with np pairs
+        do i = 1,np
+            ! select p:  marginal prob ~ wtave + w(p)
+            do
+                call random_number( ur )
+                p = min( np , 1 + int( ur(1) * np ) )
+                if( wt(p)+wtave > ur(2) * (wtmax+wtave) ) exit ! accept p
+            end do
+            ! select q:  conditional prob ~ w(p) + w(q)
+            do
+                call random_number( ur )
+                q = min( np , 1 + int( ur(1) * np ) )
+                if( wt(p)+wt(q) > ur(2) * (wt(p)+wtmax) ) exit ! accept q
+            end do
+            if( p == q .or. wt(p) <= 0. .or. wt(q) <= 0. ) cycle
 
-        xpq = abs(CDF(p) - CDF(q))
-        dpq = abs(z(p) - z(q))
-        fpq = exp(-xpq**2/4/var_k)
-        dvar_z = dvar_z + wt(p)*wt(q)/(wt(p)+wt(q)) * fpq * dpq**2
-    enddo
+            xpq = abs(CDF(p) - CDF(q))
+            dpq = abs(z(p) - z(q))
+            fpq = exp(-xpq**2/4/var_k)
+            dvar_z = dvar_z + wt(p)*wt(q)/(wt(p)+wt(q)) * fpq * dpq**2 / wtsum
+        enddo
+    endif
     coeffs = (var_z + epsilon) / (dvar_z + epsilon)
+    
+    ! write(*,*) 'kermix: coeffs=', coeffs
 
     ! get number of mixing pairs
     call random_number( ur(1) )
     nmix = int( 1.5*omdt*np*coeffs + ur(1) )
+    
+    ! write(*,*) "nmix = ", nmix
 
     ! loop over particle-pair interactions
     do imix = 1, nmix
@@ -118,9 +136,9 @@
         call random_number(ur)
         if ( ur(1) <= fpq ) then
             a = ur(2)
-            fbar(1:ncomp) = ( f(p,1:ncomp)*wt(p) + f(q,1:ncomp)*wt(q) ) / (wt(p) + wt(q))
-            
-            f(q,1:ncomp) = f(p,1:ncomp) - a * (f(p,1:ncomp) - fbar(1:ncomp))
+            call random_number(a)
+            fbar(1:ncomp) = (f(p,1:ncomp)*wt(p) + f(q,1:ncomp)*wt(q)) / (wt(p) + wt(q))
+            f(p,1:ncomp) = f(p,1:ncomp) - a * (f(p,1:ncomp) - fbar(1:ncomp))
             f(q,1:ncomp) = f(q,1:ncomp) - a * (f(q,1:ncomp) - fbar(1:ncomp))
         endif
     enddo
@@ -154,17 +172,17 @@
     
     implicit none
     integer,          intent(in)    :: np, npd, ncomp
-    real(kind(1.d0)), intent(in)    :: omdt(ncomp), z(np)
-    real(kind(1.d0)), intent(inout) :: f(npd,ncomp), wt(np)
+    real(kind(1.e0)), intent(in)    :: omdt(ncomp), z(np)
+    real(kind(1.e0)), intent(inout) :: f(npd,ncomp), wt(np)
 
-    real(kind(1.d0)) :: sigma_k, var_k, coeffs, epsilon
-    real(kind(1.d0)) :: mean_z, var_z, dvar_z, CDF(np)
-    real(kind(1.d0)) :: xpq, dpq, fpq
-    real(kind(1.d0)) :: wtsum, wtave, wtmax
-    real(kind(1.d0)) :: ur(2), fbar(ncomp), theta(ncomp), a
+    real(kind(1.e0)) :: sigma_k, var_k, coeffs, epsilon
+    real(kind(1.e0)) :: mean_z, var_z, dvar_z, CDF(np)
+    real(kind(1.e0)) :: xpq, dpq, fpq
+    real(kind(1.e0)) :: wtsum, wtave, wtmax
+    real(kind(1.e0)) :: ur(2), fbar(ncomp), theta(ncomp), a
     integer          :: i, j
     integer          :: p, q, nmix, imix
-    real(kind(1.d0)) :: MassH( np, ncomp)
+    real(kind(1.e0)) :: MassH( np, ncomp)
     !   MassH(i,j) j<=ncomp-1 - mass_j ( mass of species_j ) of particle_i, 
     !              j= ncomp   - sensible enthalpy of particle_i,            
     
@@ -295,10 +313,10 @@
     
     implicit none
     integer,          intent(in)    :: N, Nbin
-    real(kind(1.d0)), intent(in)    :: A(N)
-    real(kind(1.d0)), intent(inout) :: cdfA(N)
-    real(kind(1.d0)) :: minA, maxA
-    real(kind(1.d0)) :: minB(Nbin), maxB(Nbin)
+    real(kind(1.e0)), intent(in)    :: A(N)
+    real(kind(1.e0)), intent(inout) :: cdfA(N)
+    real(kind(1.e0)) :: minA, maxA
+    real(kind(1.e0)) :: minB(Nbin), maxB(Nbin)
     integer          :: countB(Nbin), accumB(Nbin)
     integer          :: i, j
 
@@ -336,11 +354,11 @@
 
     implicit none
     integer,          intent(in)    :: N       ! size of array
-    real(kind(1.d0)), intent(in)    :: A(N)    ! Array to be sorted (not changed)
-    real(kind(1.d0)), intent(inout) :: cdfA(N) ! Array CDF to be calculated
+    real(kind(1.e0)), intent(in)    :: A(N)    ! Array to be sorted (not changed)
+    real(kind(1.e0)), intent(inout) :: cdfA(N) ! Array CDF to be calculated
     integer          :: i
     integer          :: indx(N)
-    real(kind(1.d0)) :: tmpA(N)
+    real(kind(1.e0)) :: tmpA(N)
 
     tmpA(:) = A(:)
     
@@ -360,12 +378,12 @@
         recursive subroutine quickSort(l, r, A, nA)
 
         implicit none
-        real(kind(1.d0)), intent(inout), dimension(:) :: A  ! Array to be sorted
+        real(kind(1.e0)), intent(inout), dimension(:) :: A  ! Array to be sorted
         integer,          intent(inout), dimension(:) :: nA ! Assist array, i.e., index of A
         integer,          intent(in)                  :: l, r
         integer          :: i, j
         integer          :: ntmp1, ntmp2
-        real(kind(1.d0)) :: tmp1, tmp2
+        real(kind(1.e0)) :: tmp1, tmp2
         
         if (l>r) return;
 
@@ -406,9 +424,9 @@
     !   theta(j)    -  controlling parameter for uniform distribution of a_j
     implicit none
     integer                       :: ncomp
-    real(kind(1.d0)), intent(in)  :: omdt(ncomp)
-    real(kind(1.d0)), intent(out) :: theta(ncomp)
-    real(kind(1.d0)) :: omdt_relative(ncomp), omdt_max
+    real(kind(1.e0)), intent(in)  :: omdt(ncomp)
+    real(kind(1.e0)), intent(out) :: theta(ncomp)
+    real(kind(1.e0)) :: omdt_relative(ncomp), omdt_max
     integer          :: j
     
     omdt_max = maxval( omdt(1:ncomp) )

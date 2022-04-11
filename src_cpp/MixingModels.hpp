@@ -175,7 +175,7 @@ public:
             alpha = (-B+sqrt(abs(B*B-4*A*C)))/2/A;
 
             dt = min(dt, dt_in);
-            cout << "EMST dt_in=" << dt_in << ", dt=" << dt << endl;
+            // cout << "EMST dt_in=" << dt_in << ", dt=" << dt << endl;
 
             for(int i=0; i<N; ++i){
                 phis[i] += dphi[i] * alpha * dt;
@@ -270,7 +270,7 @@ public:
         Wavr = mean(weights);
         get_minmax(weights, Wmin, Wmax);
 
-        // get coeffs
+        // get coeffs by random selecting N pairs
         real* W = weights.data();
         for(int i=0; i<N; ++i){
             // select p: marginal prob ~ Wavr + W[p]
@@ -285,6 +285,17 @@ public:
             dvar += f_pq * W[p]*W[q]/(W[p]+W[q])*pow(phis[p]-phis[q],2);
         }
         coeff = variance(phis, weights) / dvar;
+
+        // // get coeffs by selecting all possible pairs
+        // real* W = weights.data();
+        // for(int p=0; p<N; ++p){
+        //     for(int q=0; q<N; ++q){
+        //         f_pq = kernel_func(cdf[p]-cdf[q]);
+        //         dvar += f_pq * W[p]*W[q]/(W[p]+W[q])*pow(phis[p]-phis[q],2) / N;
+        //     }
+        // }
+        // coeff = variance(phis, weights) / dvar;
+        // cout << "coeff" << coeff << endl;
 
         // set number of mixing pairs
         real num_mix, pmix, alpha, phi_pq;

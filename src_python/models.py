@@ -40,7 +40,7 @@ class IEM(MixingModel):
 class MCurl(MixingModel):
     def __init__(self, particles, weights):
         super(MCurl, self).__init__(particles, weights)
-        self.name = "MCurl "
+        self.name = "MCurl"
         self.N = len(particles)
 
     def update(self, Omega_phi, dt):
@@ -116,12 +116,12 @@ class EMST(MixingModel):
             
         self.dphidt = dphi * alpha
 
-        print("EMST: dt_in=%6.1e, dt=%6.1e, alpha=%e"%(dt_in, dt, alpha))
+        # print("EMST: dt_in=%6.1e, dt=%6.1e, alpha=%e"%(dt_in, dt, alpha))
         if dt < dt_in:
             super(EMST, self).update(Omega_phi, dt)
             return self.update(Omega_phi, dt_in-dt)
         else:
-            print("EMST: finsih inner loop.")
+            # print("EMST: finsih inner loop.")
             return super(EMST, self).update(Omega_phi, dt)
 
 

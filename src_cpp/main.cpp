@@ -10,7 +10,7 @@ int main()
     /*************************
      mixing settings
      *************************/
-    int N = 4000;               // number of samples
+    int N = 1000;               // number of samples
     int MAX_STEPS = 1000;       // maximum steps
     real Omega_phi = 2;         // mixing frequency
     real dt = 4e-3;             // timestep
@@ -47,18 +47,17 @@ int main()
      set mixing models
      *************************/
     vector<MixingModel*> MMs;
-    MMs.push_back(new IEM(particles, weights));
-    MMs.push_back(new MC(particles, weights));
-    MMs.push_back(new EMST(particles, weights));
-    MMs.push_back(new KerM(particles, weights, 0.25));
+    MMs.push_back( new IEM(particles, weights) );
+    MMs.push_back( new MC(particles, weights) );
+    MMs.push_back( new EMST(particles, weights) );
+    MMs.push_back( new KerM(particles, weights, 0.25) );
 
-    cout << std::flush;
     /*************************
      mixing for each model
      *************************/
     for(int k=0; k<MMs.size(); ++k){
         MixingModel* mm = MMs[k];
-        cout << "Start Mixing " << mm->name << endl;
+        printf("Start mixing in c++: %s (N=%d)\r\n", mm->name.c_str(), N);
 
         int j = 0;
         real std_j, std_0 = sqrt(variance(mm->phis, mm->weights));
@@ -76,7 +75,8 @@ int main()
             }
             if(j==max_j) break;
         }
-        cout << "Time Cost = " << mm->timecost << endl;
+        printf("Time Cost = %f \r\n", mm->timecost);
+        cout << std::endl << std::flush;
         filename = PATH + casename + "_" + mm->name + "_costs.txt";
         saveCost(filename, N, mm->timecost);
     }

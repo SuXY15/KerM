@@ -1,19 +1,16 @@
 TARGET = mix
 
-CC = g++
-CFLAGS = -O3 -std=c++11 -DDOUBLE
-
-SRC = \
-	./src_c/main.cpp
-
-INC = ./src_c/
-
 default:
 	make clean
-	make $(TARGET)
+	make cpp
 
-$(TARGET):
-	$(CC) $(CFLAGS) $(SRC) -I$(INC) -o $(TARGET)
+cpp:
+	make --directory=src_cpp
+	mv src_cpp/mix $(TARGET)
 
+fortran:
+	make --directory=src_fortran
+	mv src_fortran/mixing_test $(TARGET)
+	
 clean:
-	rm -f $(TARGET) 
+	rm -f $(TARGET)
