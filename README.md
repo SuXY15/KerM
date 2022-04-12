@@ -21,9 +21,11 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   python performance.py fortran
   ```
   + Comparison results of 10k particles for EMST and 50k particles for other models (`KerM` sigma_k=0.25)
-  ![](figs/comparison_fortran_PoF_1996_Fig9b_uniform_10000&50000.png)
+    ![](figs/comparison_fortran_PoF_1996_Fig9b_uniform_10000&50000.png)
+  
   + Performance of mixing models (right side is achieved by further optimization and acceleration, but leads to around 2% timescale error)
-  <img src="figs/performance_fortran_PoF_1996_Fig9b_np_coeffs.png" style="width:48%;" /> <img src="figs/performance_fortran_PoF_1996_Fig9b_bin_coeffs.png" style="width:48%;" />
+  
+    <img src="figs/performance_fortran_PoF_1996_Fig9b_np_coeffs.png" style="width:48%;" /> <img src="figs/performance_fortran_PoF_1996_Fig9b_bin_coeffs.png" style="width:48%;" />
   
 + C++ Version:
   + [src_cpp/MixingModels.hpp](src_cpp/MixingModels.hpp): implementation of mixing models
