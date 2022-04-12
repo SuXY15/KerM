@@ -80,6 +80,15 @@ def PDFstat(xi, yi):
     var = np.sum(yi*(xi-mu)**2)
     return mu, var
 
+def smooth(data, window=5): 
+    # data: NumPy 1-D array containing the data to be smoothed 
+    # window: smoothing window size needs, which must be odd number
+    out0 = np.convolve(data,np.ones(window,dtype=int),'valid')/window  
+    r = np.arange(1,window-1,2) 
+    start = np.cumsum(data[:window-1])[::2]/r 
+    stop = (np.cumsum(data[:-window:-1])[::2]/r)[::-1] 
+    return np.concatenate(( start, out0, stop )) 
+
 def genSamples(PDFxy, N, method="uniform"):
     xr = np.min(PDFxy[:,0]), np.max(PDFxy[:,0])
     f_PDF = interp1d(PDFxy[:,0], PDFxy[:,1]/np.max(PDFxy[:,1]))
@@ -89,8 +98,18 @@ def genSamples(PDFxy, N, method="uniform"):
     if method == "uniform":
         weights = np.ones(N)/N
     else:
-        weights = f_PDF(particles)*cdiff(particles)
+        dx = cdiff(particles)
+        weights = f_PDF(particles)*smooth(dx,3)
         weights = weights / np.sum(weights)
     idx = np.arange(N)
     np.random.shuffle(idx)
     return particles[idx], weights[idx]
+
+if __name__ == "__main__":
+    PDFxy = np.array([[0,0],[1,1]])
+    xi, pi = PDF(*genSamples(PDFxy, N=4000, method="uniform"))
+    plt.plot(xi, pi, '-', label='uniform')
+    xi, pi = PDF(*genSamples(PDFxy, N=4000, method="weighted"))
+    plt.plot(xi, pi, '--', label='weighted')
+    plt.legend()
+    plt.show()

@@ -6,6 +6,25 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
 
 ### 1. Usage
 
++ Fortran version:
+  + [src_fortran/mixing_test.f90](src_fortran/mixing_test.f90): main program for testing.
+  + [src_fortran/mixing_model_kerm.f90](src_fortran/mixing_model_kerm.f90): source code of `KerM` with differential diffusion supported.
+  + [src_fortran/mixing_model_iem.f90](src_fortran/mixing_model_iem.f90): source code of `IEM`, used for comparison.
+  + [src_fortran/mixing_model_mcurl.f90](src_fortran/mixing_model_mcurl.f90): source code of `MC`, used for comparison.
+  + [src_fortran/emst.f](src_fortran/emst.f) and [src_fortran/emst_subs.f](src_fortran/emst_subs.f): source code of `EMST` adopted from [^1], used for comparison.
+  ```shell
+  # build executable file (single precision float)
+  make fortran
+  # run simulation, faster than cpp version
+  ./mix
+  # show results
+  python performance.py fortran
+  ```
+  + Comparison results of 10k particles for EMST and 50k particles for other models (`KerM` sigma_k=0.25)
+  ![](figs/comparison_fortran_PoF_1996_Fig9b_uniform_10000&50000.png)
+  + Performance of mixing models (right side is achieved by further optimization and acceleration, but leads to around 2% timescale error)
+  <img src="figs/performance_fortran_PoF_1996_Fig9b_np_coeffs.png" style="width:48%;" /> <img src="figs/performance_fortran_PoF_1996_Fig9b_bin_coeffs.png" style="width:48%;" />
+  
 + C++ Version:
   + [src_cpp/MixingModels.hpp](src_cpp/MixingModels.hpp): implementation of mixing models
   + [src_cpp/main.cpp](src_cpp/main.cpp): run simulation
@@ -26,27 +45,8 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   
   Performance of mixing models (`EMST-D` do not account aging properties and no `IEM` assisted, for original `EMST` implementation, please refer to the Fortran version)
   
-  <img src="figs/performance_cpp_PoF_1996_Fig9b.png" style="width:50%;" />
+  <img src="figs/performance_cpp_PoF_1996_Fig9b.png" style="width:48%;" />
 
-+ Fortran version:
-  + [src_fortran/mixing_test.f90](src_fortran/mixing_test.f90): main program for testing.
-  + [src_fortran/mixing_model_kerm.f90](src_fortran/mixing_model_kerm.f90): source code of `KerM` with differential diffusion supported.
-  + [src_fortran/mixing_model_iem.f90](src_fortran/mixing_model_iem.f90): source code of `IEM`, used for comparison.
-  + [src_fortran/mixing_model_mcurl.f90](src_fortran/mixing_model_mcurl.f90): source code of `MC`, used for comparison.
-  + [src_fortran/emst.f](src_fortran/emst.f) and [src_fortran/emst_subs.f](src_fortran/emst_subs.f): source code of `EMST` adopted from [^1], used for comparison.
-  ```shell
-  # build executable file (single precision float)
-  make fortran
-  # run simulation, faster than cpp version
-  ./mix
-  # show results
-  python performance.py fortran
-  ```
-  + Comparison results of 10k particles for EMST and 50k particles for other models (`KerM` sigma_k=0.25)
-  ![](figs/comparison_fortran_PoF_1996_Fig9b_uniform_10000&50000.png)
-  + Performance of mixing models
-  <img src="figs/performance_fortran_PoF_1996_Fig9b.png" style="width:50%;" />
-  
 + Python Version:
   + [src_python/models.py](src_python/models.py): implementation of mixing models
   + [src_python/mixing_py.py](src_python/mixing_py.py): run simulation

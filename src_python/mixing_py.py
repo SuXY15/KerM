@@ -31,7 +31,7 @@ max_steps = 10000
 
 # 1D inert DNS PoF Juneja 1996 Phi2, sigma_x = 0.3
 casename = "PoF_1996_Fig9b"
-N = 4000  # number of particles
+N = 50000  # number of particles
 var_arr = [1.0, 0.8, 0.6, 0.5, 0.4, 0.3]
 ddt_arr = [0,   0.2, 0.4, 0.5, 0.6, 0.7]
 namerule = "./data/inert/Juneja_1996_PoF_Phi2_Var_%.1f.txt"
@@ -61,11 +61,11 @@ particles, weights = genSamples(init_PDF, N, method="uniform")
 # # weighted PDF, something wrong in python code, not used now
 # particles, weights = genSamples(init_PDF, N, method="weighted")
 
-# # saving samples to file
-# samples = np.vstack([particles, weights]).T
-# np.savetxt("./data/%s_samples.txt"%casename, samples)
-# np.savetxt("./data/%s_variances.txt"%casename, [len(var_arr)] + var_arr)
-# sys.exit()
+# saving samples to file
+samples = np.vstack([particles, weights]).T
+np.savetxt("./data/%s_samples.txt"%casename, samples)
+np.savetxt("./data/%s_variances.txt"%casename, [len(var_arr)] + var_arr)
+sys.exit()
 
 # ==================================
 # Select Mixing Models

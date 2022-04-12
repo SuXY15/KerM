@@ -91,6 +91,7 @@ program mixing_test
         
         call cpu_time(t0)
 
+        ! select models
         if (model_name == "IEM") then
             call iem(np, npd, ncomp, wt, f, omdt)
         elseif (model_name == "MC") then
