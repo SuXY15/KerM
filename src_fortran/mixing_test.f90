@@ -22,11 +22,11 @@ program mixing_test
                                               !     scale for species = 0.01
                                               !     scale for enthaply = 1e16
     
-    model_name = "MCMG"
+    model_name = "KerM"
 
     ! ==============================
     ! settings for number of particles and compositions
-    npd = 4000
+    npd = 50000
     ncomp = 1
     np = npd
     

@@ -37,10 +37,10 @@
       MODULE BLAS_LAPACK_MODULE
 
 
-      REAL(KIND=8), PARAMETER :: ZERO = 0.0D0
-      REAL(KIND=8), PARAMETER :: ONE  = 1.0D0
-      REAL(KIND=8), PARAMETER :: TWO  = 2.0D0
-      REAL(KIND=8), PARAMETER :: HALF = 0.5D0
+      REAL(KIND(1.E0)), PARAMETER :: ZERO = 0.0D0
+      REAL(KIND(1.E0)), PARAMETER :: ONE  = 1.0D0
+      REAL(KIND(1.E0)), PARAMETER :: TWO  = 2.0D0
+      REAL(KIND(1.E0)), PARAMETER :: HALF = 0.5D0
 
 
       CONTAINS
@@ -85,8 +85,8 @@
       IMPLICIT NONE
 
       INTEGER (KIND=4), INTENT(IN)  :: n, incx, incy
-      REAL    (KIND=8), INTENT(IN)  :: dx(*), da
-      REAL    (KIND=8), INTENT(OUT) :: dy(*)
+      REAL(KIND(1.E0)), INTENT(IN)  :: dx(*), da
+      REAL(KIND(1.E0)), INTENT(OUT) :: dy(*)
 
       INTEGER (KIND=4) :: m, ix, iy, i, ns
 
@@ -170,8 +170,8 @@
       IMPLICIT NONE
 
       INTEGER (KIND=4), INTENT(IN)    :: n, incx, incy
-      REAL    (KIND=8), INTENT(IN)    :: dx(*)
-      REAL    (KIND=8), INTENT(INOUT) :: dy(*)
+      REAL(KIND(1.E0)), INTENT(IN)    :: dx(*)
+      REAL(KIND(1.E0)), INTENT(INOUT) :: dy(*)
 
       INTEGER (KIND=4) :: ix, iy, i, m, ns
 
@@ -243,12 +243,12 @@
 
       IMPLICIT NONE
 
-      REAL    (KIND=8) :: ddot
+      REAL(KIND(1.E0)) :: ddot
       INTEGER (KIND=4), INTENT(IN) :: incx, incy, n
-      REAL    (KIND=8), INTENT(IN) :: dx(*), dy(*)
+      REAL(KIND(1.E0)), INTENT(IN) :: dx(*), dy(*)
 
       INTEGER (KIND=4) :: i, ix, iy, m, mp1
-      REAL    (KIND=8) :: dtemp
+      REAL(KIND(1.E0)) :: dtemp
 
       ddot  = zero
       dtemp = zero
@@ -310,8 +310,8 @@
       IMPLICIT NONE
 
       INTEGER (KIND=4), INTENT(IN)    :: incx, n
-      REAL    (KIND=8), INTENT(IN)    :: da
-      REAL    (KIND=8), INTENT(INOUT) :: dx(*)
+      REAL(KIND(1.E0)), INTENT(IN)    :: da
+      REAL(KIND(1.E0)), INTENT(INOUT) :: dx(*)
 
       INTEGER (KIND=4) :: i, m, mp1, nincx
 
@@ -539,12 +539,12 @@
 !     .. Scalar Arguments ..
       CHARACTER(LEN=1), INTENT(IN) :: TRANSA, TRANSB
       INTEGER (KIND=4), INTENT(IN) :: M, N, K, LDA, LDB, LDC
-      REAL    (KIND=8), INTENT(IN) :: ALPHA, BETA
+      REAL(KIND(1.E0)), INTENT(IN) :: ALPHA, BETA
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: A( LDA, * )
-      REAL    (KIND=8), INTENT(IN)    :: B( LDB, * )
-      REAL    (KIND=8), INTENT(INOUT) :: C( LDC, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: B( LDB, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: C( LDC, * )
 
 !     .. External Functions ..
 !     LOGICAL :: LSAME
@@ -559,7 +559,7 @@
 !     .. Local Scalars ..
       LOGICAL :: NOTA, NOTB
       INTEGER (KIND=4) :: I, INFO, J, L, NCOLA, NROWA, NROWB
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
 
 !     .. Executable Statements ..
 !
@@ -832,15 +832,15 @@
 
 !     .. Scalar Arguments ..
       INTEGER (KIND=4), INTENT(IN) :: INCX, INCY, LDA, M, N
-      REAL    (KIND=8), INTENT(IN) :: ALPHA, BETA
+      REAL(KIND(1.E0)), INTENT(IN) :: ALPHA, BETA
       CHARACTER(LEN=1), INTENT(IN) :: TRANS
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: A( LDA, * ), X( * )
-      REAL    (KIND=8), INTENT(INOUT) :: Y( * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: A( LDA, * ), X( * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: Y( * )
 
 !     .. Local Scalars ..
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
       INTEGER (KIND=4) :: I, INFO, IX, IY, J, JX, JY, KX, KY, LENX, LENY
 
 !     .. External Functions ..
@@ -1107,7 +1107,7 @@
       INTEGER (KIND=4), INTENT(OUT) :: INFO
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(INOUT) :: AB( LDAB, * ), B( LDB, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: AB( LDAB, * ), B( LDB, * )
 
 !     .. Intrinsic Functions ..
       INTRINSIC MAX
@@ -1245,11 +1245,11 @@
       INTEGER (KIND=4), INTENT(OUT) :: INFO
 
 !     .. Array Arguments ..
-      REAL(KIND=8), INTENT(INOUT) :: AB( LDAB, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: AB( LDAB, * )
 
 !     .. Local Scalars ..
       INTEGER (KIND=4) :: J, KLD, KN
-      REAL    (KIND=8) :: AJJ
+      REAL(KIND(1.E0)) :: AJJ
       LOGICAL :: UPPER
 
 !     .. External Functions ..
@@ -1440,7 +1440,7 @@
       INTEGER (KIND=4), INTENT(OUT) :: INFO
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(INOUT) :: AB( LDAB, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: AB( LDAB, * )
 !     ..
 !     .. Parameters ..
       INTEGER (KIND=4),PARAMETER :: NBMAX = 32, LDWORK = NBMAX+1
@@ -1449,7 +1449,7 @@
       INTEGER (KIND=4) :: I, I2, I3, IB, II, J, JJ, NB
 
 !     .. Local Arrays ..
-      REAL    (KIND=8) :: WORK( LDWORK, NBMAX )
+      REAL(KIND(1.E0)) :: WORK( LDWORK, NBMAX )
 
 !     .. External Functions ..
 !     LOGICAL :: LSAME
@@ -1784,8 +1784,8 @@
       INTEGER (KIND=4), INTENT(OUT) :: INFO
 !     ..
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: AB( LDAB, * )
-      REAL    (KIND=8), INTENT(INOUT) :: B( LDB, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: AB( LDAB, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: B( LDB, * )
 !     ..
 !     .. Local Scalars ..
       LOGICAL :: UPPER
@@ -1936,11 +1936,11 @@
       INTEGER (KIND=4), INTENT(OUT) :: INFO
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(INOUT) :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: A( LDA, * )
 
 !     .. Local Scalars ..
       INTEGER (KIND=4) :: J
-      REAL    (KIND=8) :: AJJ
+      REAL(KIND(1.E0)) :: AJJ
       LOGICAL :: UPPER
 
 !     .. External Functions ..
@@ -2119,15 +2119,15 @@
 
 !     .. Scalar Arguments ..
       INTEGER (KIND=4), INTENT(IN) :: INCX, LDA, N
-      REAL    (KIND=8), INTENT(IN) :: ALPHA
+      REAL(KIND(1.E0)), INTENT(IN) :: ALPHA
       CHARACTER(LEN=1), INTENT(IN) :: UPLO
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(INOUT) :: A( LDA, * )
-      REAL    (KIND=8), INTENT(IN)    :: X( * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: X( * )
 
 !     .. Local Scalars ..
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
       INTEGER (KIND=4) :: I, INFO, IX, J, JX, KX
 
 !     .. External Functions ..
@@ -2357,11 +2357,11 @@
 !     .. Scalar Arguments ..
       CHARACTER(LEN=1), INTENT(IN) :: UPLO, TRANS
       INTEGER (KIND=4), INTENT(IN) :: N, K, LDA, LDC
-      REAL    (KIND=8), INTENT(IN) :: ALPHA, BETA
+      REAL(KIND(1.E0)), INTENT(IN) :: ALPHA, BETA
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: A( LDA, * )
-      REAL    (KIND=8), INTENT(INOUT) :: C( LDC, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: C( LDC, * )
 
 !     .. External Functions ..
 !     LOGICAL :: LSAME
@@ -2375,7 +2375,7 @@
 
 !     .. Local Scalars ..
       INTEGER (KIND=4) :: I, INFO, J, L, NROWA
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
       LOGICAL :: UPPER
 
 !     .. Executable Statements ..
@@ -2685,11 +2685,11 @@
       CHARACTER(LEN=1), INTENT(IN) :: DIAG, TRANS, UPLO
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: A( LDA, * )
-      REAL    (KIND=8), INTENT(INOUT) :: X( * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: X( * )
 
 !     .. Local Scalars ..
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
       INTEGER (KIND=4) :: I, INFO, IX, J, JX, KPLUS1, KX, L
       LOGICAL :: NOUNIT
 
@@ -3007,18 +3007,18 @@
 !     .. Scalar Arguments ..
       CHARACTER(LEN=1), INTENT(IN) :: SIDE, UPLO, TRANSA, DIAG
       INTEGER (KIND=4), INTENT(IN) :: M, N, LDA, LDB
-      REAL    (KIND=8), INTENT(IN) :: ALPHA
+      REAL(KIND(1.E0)), INTENT(IN) :: ALPHA
 
 !     .. Array Arguments ..
-      REAL    (KIND=8), INTENT(IN)    :: A( LDA, * )
-      REAL    (KIND=8), INTENT(INOUT) :: B( LDB, * )
+      REAL(KIND(1.E0)), INTENT(IN)    :: A( LDA, * )
+      REAL(KIND(1.E0)), INTENT(INOUT) :: B( LDB, * )
 
 !     .. Intrinsic Functions ..
       INTRINSIC MAX
 
 !     .. Local Scalars ..
       INTEGER (KIND=4) :: I, INFO, J, K, NROWA
-      REAL    (KIND=8) :: TEMP
+      REAL(KIND(1.E0)) :: TEMP
       LOGICAL :: LSIDE, NOUNIT, UPPER
 
 !

@@ -34,33 +34,33 @@
 
 !-----  input variables
     integer,          intent(in)    :: np, npd, ncomp
-    real(kind(1.e0)), intent(in)    :: omdt
+    REAL(KIND(1.E0)), intent(in)    :: omdt
 
 !-----  input/output variables
-    real(kind(1.e0)), intent(inout) :: f(npd,ncomp), wt(np)
+    REAL(KIND(1.E0)), intent(inout) :: f(npd,ncomp), wt(np)
 
 !-----  local variables
     INTEGER          :: i, ig, igadd, k, l
-    real    (kind=8) :: hcphomdt, inc_wt, omega, wtsum, &
+    REAL(KIND(1.E0)) :: hcphomdt, inc_wt, omega, wtsum, &
                         fold, fnew, ffold, ffnew, &
                         etai, etaph, etap, gph, fac
 
     integer         , ALLOCATABLE :: isp(:)                 ! (np)
-    real    (kind=8), ALLOCATABLE :: cdf(:)                 ! (np+1)
-    real    (kind=8), ALLOCATABLE :: eta(:)                 ! (np+1)
-    real    (kind=8), ALLOCATABLE :: phi(:)                 ! (np)
-    real    (kind=8), ALLOCATABLE :: bph(:)                 ! (np-1)
+    REAL(KIND(1.E0)), ALLOCATABLE :: cdf(:)                 ! (np+1)
+    REAL(KIND(1.E0)), ALLOCATABLE :: eta(:)                 ! (np+1)
+    REAL(KIND(1.E0)), ALLOCATABLE :: phi(:)                 ! (np)
+    REAL(KIND(1.E0)), ALLOCATABLE :: bph(:)                 ! (np-1)
 
 !-----  variables needed for call of LAPACK routine DPBSV
     integer         , PARAMETER :: kd = 1, nrhs = 1, ldab = kd+1
 
     integer          :: info
-    real(kind=8), ALLOCATABLE :: ab(:,:)                ! (ldab,np)
+    REAL(KIND(1.E0)), ALLOCATABLE :: ab(:,:)                ! (ldab,np)
     character(len=1) :: uplo
 
-    real    (kind=8), PARAMETER :: rtpi = 0.39894228d0
-    real    (kind=8), PARAMETER :: phimin = -1.E30, phimax = 1.E30
-    real    (kind=8), PARAMETER :: tiny = 1.E-30, small = 1.E-10
+    REAL(KIND(1.E0)), PARAMETER :: rtpi = 0.39894228d0
+    REAL(KIND(1.E0)), PARAMETER :: phimin = -1.E30, phimax = 1.E30
+    REAL(KIND(1.E0)), PARAMETER :: tiny = 1.E-30, small = 1.E-10
 
     !  quick returns if no mixing required
     if( np <= 1 ) return;
@@ -222,23 +222,23 @@
 
 !----- input variables
       integer         , INTENT(IN) :: n
-      real    (kind=8), INTENT(IN) :: x(n)                    !(n)
+      REAL(KIND(1.E0)), INTENT(IN) :: x(n)                    !(n)
 
 !----- output variables
-      real    (kind=8), INTENT(OUT) :: y(n)                   !(n)
+      REAL(KIND(1.E0)), INTENT(OUT) :: y(n)                   !(n)
 
 !----- local variables
       integer          :: i
-      real    (kind=8) :: xi, x1, x2, x3, yi, y1, t, t1, t2, f, f1, f2, s
+      REAL(KIND(1.E0)) :: xi, x1, x2, x3, yi, y1, t, t1, t2, f, f1, f2, s
 
-      real    (kind=8), PARAMETER :: zero = 0.d0, &
+      REAL(KIND(1.E0)), PARAMETER :: zero = 0.d0, &
                                      half = 0.5d0, &
                                      one = 1.d0, &
                                      two = 2.d0, &
                                      big = 1.D+03, &
                                      small = 2.8D-17
 
-      real    (kind=8), PARAMETER :: c0 = 2.515517d0, &
+      REAL(KIND(1.E0)), PARAMETER :: c0 = 2.515517d0, &
                                      c1 = 0.802853d0, &
                                      c2 = 0.010328d0, &
                                      d1 = 1.432788d0, &
@@ -309,18 +309,18 @@
 
 !-----  input variables
       integer         , INTENT(IN) :: nin, nout
-      real    (kind=8), INTENT(IN) :: xmin, xmax, fmin, fmax
-      real    (kind=8), INTENT(IN) :: xin(nin)                ! (nin)
-      real    (kind=8), INTENT(IN) :: fin(nin)                ! (nin)
-      real    (kind=8), INTENT(IN) :: xout(nout)              ! (nout)
+      REAL(KIND(1.E0)), INTENT(IN) :: xmin, xmax, fmin, fmax
+      REAL(KIND(1.E0)), INTENT(IN) :: xin(nin)                ! (nin)
+      REAL(KIND(1.E0)), INTENT(IN) :: fin(nin)                ! (nin)
+      REAL(KIND(1.E0)), INTENT(IN) :: xout(nout)              ! (nout)
                                      
 
 !-----  output variables
-      real    (kind=8), INTENT(INOUT) :: fout(nout)           ! (nout)
+      REAL(KIND(1.E0)), INTENT(INOUT) :: fout(nout)           ! (nout)
 
 !-----  local variables
       integer          :: i, j
-      real    (kind=8) :: f1, f2, fac1, fac2, x1, x2, dx, xmm, xxx, xouti
+      REAL(KIND(1.E0)) :: f1, f2, fac1, fac2, x1, x2, dx, xmm, xxx, xouti
 
 !=====  MAIN ACTION
 
@@ -396,12 +396,12 @@
       integer         , INTENT(IN) :: n
 
 !-----  input/output variables
-      real    (kind=8), INTENT(INOUT) :: ra(n)                ! (n)
+      REAL(KIND(1.E0)), INTENT(INOUT) :: ra(n)                ! (n)
       integer         , INTENT(INOUT) :: jb(n)                ! (n)
 
 !-----  local variables
       integer          :: i, j, ir, l, jjb
-      real    (kind=8) :: rra
+      REAL(KIND(1.E0)) :: rra
 
 !=====  MAIN ACTION
 

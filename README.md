@@ -21,7 +21,7 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   # show results
   python performance.py fortran
   ```
-  + Comparison results of 10k particles for EMST and 50k particles for other models (`KerM` sigma_k=0.25), where the dash lines are for the DNS data from [^3]
+  + Comparison results of 10k particles for EMST and MCMG; 50k particles for other models, where the dash lines are for the DNS data from [^3] (For `KerM`, sigma_k=0.25 is used)
     ![](figs/comparison_fortran_PoF_1996_Fig9b_uniform_10000&50000.png)
   
   + Performance of mixing models
