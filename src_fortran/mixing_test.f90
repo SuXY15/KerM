@@ -22,11 +22,11 @@ program mixing_test
                                               !     scale for species = 0.01
                                               !     scale for enthaply = 1e16
     
-    model_name = "KerM"
+    model_name = "MCMG"
 
     ! ==============================
     ! settings for number of particles and compositions
-    npd = 50000
+    npd = 4000
     ncomp = 1
     np = npd
     
@@ -96,6 +96,8 @@ program mixing_test
             call iem(np, npd, ncomp, wt, f, omdt)
         elseif (model_name == "MC") then
             call mcurl(np, npd, ncomp, wt, f, omdt)
+        elseif (model_name == "MCMG") then
+            call mcmg(np, npd, ncomp, wt, f, omdt)
         elseif (model_name == "KerM") then
             call kermix(np, npd, ncomp, wt, f, omdt, f(:,1))
         elseif (model_name == "EMST") then

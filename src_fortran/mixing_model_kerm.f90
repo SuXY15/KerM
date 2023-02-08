@@ -66,6 +66,7 @@
         Nbin = max(10, min(floor(sqrt(real(np))/2), 100))
         allocate( centerB(Nbin), countB(Nbin), accumB(Nbin) )
         call bucketSort_CDF(z, wt, CDF, np, Nbin, centerB, countB, accumB)
+        accumB(:) = accumB(:) + 0.5*countB(:)
         
         !* estimate with np pairs, O(N) complexity, accurate enough
         call get_coeffs(1, np, z, wt, CDF, var_z, var_k, coeffs)  
@@ -142,8 +143,8 @@
                     xpq = abs(CDF(p) - CDF(q))
                     dpq = abs(z(p) - z(q))
                     fpq = exp(-xpq**2/4/var_k)
-                    prob = (wt(p)+wt(q))/(2.*wtsum*wtsum) * fpq
-                    dvar_z = dvar_z + prob * wt(p)*wt(q)/(wt(p)+wt(q)) * dpq**2
+                    prob = (wt(p)+wt(q))/(2.*wtsum) * fpq
+                    dvar_z = dvar_z + prob * wt(p)*wt(q)/(wt(p)+wt(q)) * dpq**2 / wtsum
                 enddo
             enddo
         else

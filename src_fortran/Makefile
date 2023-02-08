@@ -1,7 +1,7 @@
 PROGRAM := mixing_test
 FC      := gfortran
 FCFLAGS := -ffree-line-length-none -fbounds-check -fno-align-commons
-FCFLAGS += -O # for optimization
+FCFLAGS += -O0 -k8 # for optimization
 # FCFLAGS += -g -fbacktrace # for debug, no optimization
 FLFLAGS := 
 

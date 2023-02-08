@@ -55,11 +55,11 @@ xr = np.min(init_PDF[:,0]), np.max(init_PDF[:,0])
 f_init_PDF = interp1d(init_PDF[:,0], init_PDF[:,1]/np.max(init_PDF[:,1]))
 particles = np.sort(acceptSampling(f_init_PDF, xr, size=(N,)))
 
-# uniform weights
-particles, weights = genSamples(init_PDF, N, method="uniform")
+# # uniform weights
+# particles, weights = genSamples(init_PDF, N, method="uniform")
 
-# # weighted PDF, something wrong in python code, not used now
-# particles, weights = genSamples(init_PDF, N, method="weighted")
+# weighted PDF, something wrong in python code, not used now
+particles, weights = genSamples(init_PDF, N, method="weighted")
 
 # saving samples to file
 samples = np.vstack([particles, weights]).T

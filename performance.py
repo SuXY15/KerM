@@ -46,15 +46,16 @@ def compare_cost(lang="cpp"):
         Slp = [1.,    1.,    3.,        1.    ]  # slope in log scale
         Log = [False, False, True,      False ]
     elif lang=="fortran":
-        MMs = ["IEM", "MC",  "EMST", "KerM"]
-        Slp = [1,     1,     2,      1     ]  # slope in log scale
-        Log = [False, False, False,  False ]
+        MMs = ["IEM", "MC",  "MCMG", "EMST", "KerM",]
+        Slp = [1,     1,     1,      2,      1      ]  # slope in log scale
+        Log = [False, False, False,   False,  False  ]
     else:
         print("ERROR::only cpp and fortran are supported")
 
     # ==================================
     # Get and show COST info
-    plt.figure(figsize=(5,4))
+    print("Hanlding the costs and plots ...")
+    plt.figure(figsize=(6,4))
     Tmin, Tmax = 1e10, -1e10
     for i,mm in enumerate(MMs):
         data = np.loadtxt(PATH + casename + "_%s_"%lang + mm + "_costs.txt")
@@ -76,13 +77,14 @@ def compare_cost(lang="cpp"):
     plt.yscale("log")
     plt.xlabel("N")
     plt.ylabel("Time Cost [s]")
-    plt.subplots_adjust(left=0.2,bottom=0.15,top=0.95,right=0.98, wspace=0.0)
+    plt.subplots_adjust(left=0.15,bottom=0.15,top=0.95,right=0.98, wspace=0.0)
     plt.savefig("figs/performance_%s_%s.png"%(lang,casename))
 
     # ==================================
     # Get and show PDF info
     fig, axs = plt.subplots(1, len(MMs), figsize=(4*len(MMs),4))
     for i,mm in enumerate(MMs):
+        print("Handling data and plots for %s ..."%mm)
         for j,var in enumerate(var_arr):
             dns_PDF = dns_data[var]
             xi, pi = dns_PDF[:,0], dns_PDF[:,1]
