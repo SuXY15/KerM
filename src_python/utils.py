@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+from scipy.linalg import lapack
 from copy import deepcopy
 from itertools import accumulate
 from scipy.interpolate import interp1d
@@ -22,7 +23,7 @@ def var(data, weights=None):
     return np.sum(w*(data-m)**2)
 
 def PDF(data, weights):
-    NBins = min(100, max(int(np.sqrt(len(data))/2), 20))
+    NBins = min(20, max(int(np.sqrt(len(data))), 100))
     hist, bins = np.histogram(data, weights=weights, bins=NBins, density=True)
     bin_centers = (bins[1:]+bins[:-1]) * 0.5
     return bin_centers, hist

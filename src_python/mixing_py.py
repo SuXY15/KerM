@@ -51,29 +51,26 @@ print()
 # ==================================
 # Generating particles with given PDF
 init_PDF = dns_data[var_arr[0]]
-xr = np.min(init_PDF[:,0]), np.max(init_PDF[:,0])
-f_init_PDF = interp1d(init_PDF[:,0], init_PDF[:,1]/np.max(init_PDF[:,1]))
-particles = np.sort(acceptSampling(f_init_PDF, xr, size=(N,)))
 
-# # uniform weights
-# particles, weights = genSamples(init_PDF, N, method="uniform")
+# uniform weights
+particles, weights = genSamples(init_PDF, N, method="uniform")
+particles = np.sort(particles) # sort first to acceralte MCMG and EMST
 
-# weighted PDF, something wrong in python code, not used now
-particles, weights = genSamples(init_PDF, N, method="weighted")
-
-# saving samples to file
-samples = np.vstack([particles, weights]).T
-np.savetxt("./data/%s_samples.txt"%casename, samples)
-np.savetxt("./data/%s_variances.txt"%casename, [len(var_arr)] + var_arr)
-sys.exit()
+# # weighted PDF, generate samples and save, not used in python code,
+# particles, weights = genSamples(init_PDF, N, method="weighted")
+# samples = np.vstack([particles, weights]).T
+# np.savetxt("./data/%s_samples.txt"%casename, samples)
+# np.savetxt("./data/%s_variances.txt"%casename, [len(var_arr)] + var_arr)
+# sys.exit()
 
 # ==================================
 # Select Mixing Models
 # TEST1: for different mixing models
-models = [ 
+models = [
     IEM  ( particles, weights ),
     MCurl( particles, weights ),
-    EMST ( *genSamples(init_PDF, 400) ),
+    MCMG ( particles, weights ),
+    EMST ( *genSamples(init_PDF, 400, method="uniform") ),
     KerM ( particles, weights, sigma_x=0.25 ),
 ]
 

@@ -49,7 +49,7 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
 
   ![](figs/comparison_cpp_PoF_1996_Fig9b_uniform_4000&50000.png)
   
-  Performance of mixing models (`EMST-D` do not account aging properties and no `IEM` assisted, for original `EMST` implementation, please refer to the Fortran version)
+  Performance of mixing models (`EMST-1D` do not account aging properties and no `IEM` assisted, for original `EMST` implementation, please refer to the Fortran version)
   
   <img src="figs/performance_cpp_PoF_1996_Fig9b.png" style="width:48%;" />
 
@@ -63,12 +63,12 @@ This repo is for 0-D simple validation, for PaSR validation please refer to [PaS
   + [src_python/mixing_py.py](src_python/mixing_py.py): run simulation
 
   ```shell
-  # run simulation, EMST taking around 10 minute for N=1000
+  # run simulation, EMST taking around 6 seconds for N=400
   python src_python/mixing_py.py
   ```
-  Comparison results of 1k particles for EMST and 10k particles for other models (uniform weighted samples, `KerM` sigma_k=0.25), where the dash lines are for the DNS data from [^3]
+  Comparison results of 400 particles for EMST and 50k particles for other models (only uniform weighted samples are used), where the dash lines are for the DNS data from [^3]
   
-  ![](figs/comparison_python_PoF_1996_Fig9b_uniform_1000&10000.png)
+  ![](figs/comparison_python_PoF_1996_Fig9b_uniform_400&50000.png)
   
 </details>
 
